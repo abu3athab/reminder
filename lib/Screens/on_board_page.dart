@@ -18,7 +18,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
         Row(
           children: [
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 30),
+              margin: const EdgeInsets.symmetric(horizontal: 30),
               height: 10,
               width: 60,
               decoration:
