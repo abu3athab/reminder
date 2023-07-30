@@ -40,12 +40,13 @@ dependencies:
   contacts_service: ^0.6.3
   flutter_screenutil: ^5.8.4
   fluttercontactpicker: ^4.7.0
-  flutter_contacts: ^1.1.7
+  flutter_contacts: ^1.1.7+1
   url_launcher: ^6.1.12
   flutter_sms: ^2.3.3
   shared_preferences: ^2.2.0
   provider: ^6.0.5
   percent_indicator: ^4.2.3
+  smooth_page_indicator: ^1.1.0
 
 dev_dependencies:
   flutter_test:
