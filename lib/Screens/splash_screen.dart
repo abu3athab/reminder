@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:reminder/Screens/main_page.dart';
 import 'package:reminder/Screens/on_board_page.dart';
 
 class SplashScreen extends StatefulWidget {
