@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reminder/Screens/send_sms_screen.dart';
 import 'package:reminder/Screens/on_board_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -12,8 +13,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (ctx) => OnBoardPage()));
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => OnBoardPage()),
+          (Route<dynamic> route) => false);
     });
     super.initState();
   }
@@ -37,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 60,
               width: 60,
               child: CircularProgressIndicator(
-                color: Colors.green,
+                color: Colors.indigo,
               ),
             )
           ],

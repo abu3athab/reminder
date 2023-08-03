@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:reminder/Screens/main_page.dart';
+import 'package:provider/provider.dart';
+import 'package:reminder/Providers/contact_provider.dart';
+import 'package:reminder/Providers/navigation_provider.dart';
 import 'package:reminder/Screens/splash_screen.dart';
 
 void main() {
@@ -11,9 +13,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => NavigationProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ContactProvider(),
+        ),
+      ],
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: SplashScreen(),
+      ),
     );
   }
 }
