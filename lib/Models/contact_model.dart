@@ -1,14 +1,17 @@
-class ContactModel {
-  String? name;
-  String? phoneNumber;
+import 'dart:typed_data';
 
-  ContactModel({this.name, this.phoneNumber});
+class ContactModel {
+  String? firstName;
+  String? lastName;
+  String? phoneNumber;
+  Uint8List? photo;
+
+  ContactModel({this.firstName, this.lastName, this.phoneNumber, this.photo});
 
   ContactModel.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
     phoneNumber = json['phoneNumber'];
   }
   toJson() {
-    return {'name': name, 'phoneNumber': phoneNumber};
+    return {'phoneNumber': phoneNumber};
   }
 }

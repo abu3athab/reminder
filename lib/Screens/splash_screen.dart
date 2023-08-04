@@ -12,8 +12,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (ctx) => OnBoardPage()));
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const OnBoardPage()),
+          (Route<dynamic> route) => false);
     });
     super.initState();
   }
@@ -37,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 60,
               width: 60,
               child: CircularProgressIndicator(
-                color: Colors.green,
+                color: Colors.indigo,
               ),
             )
           ],
