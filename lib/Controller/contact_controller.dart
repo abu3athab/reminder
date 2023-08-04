@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -28,8 +30,9 @@ class ContactController {
       contacts.removeWhere((element) => element.phoneNumber == phoneNumber);
       obj.setStringList(
           "contacts", contacts.map((e) => json.encode(e.toJson())).toList());
-    } else
-      print("empty");
+    } else {
+      return;
+    }
   }
 
   Future<List<ContactModel>> getStoredContacts() async {
@@ -51,10 +54,10 @@ class ContactController {
   }
 
   void _sendSMS(String message, List<String> recipents) async {
-    String _result = await sendSMS(message: message, recipients: recipents)
+    String result = await sendSMS(message: message, recipients: recipents)
         .catchError((onError) {
-      print(onError);
+      return (onError);
     });
-    print(_result);
+    log(result);
   }
 }

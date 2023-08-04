@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:provider/provider.dart';
-import 'package:reminder/Controller/contact_controller.dart';
 import 'package:reminder/Models/contact_model.dart';
 import 'package:reminder/Providers/contact_provider.dart';
-import 'package:reminder/Screens/contact_tile.dart';
 
 class SendSmsScreen extends StatefulWidget {
   const SendSmsScreen({Key? key}) : super(key: key);
@@ -21,6 +18,7 @@ class _SendSmsScreenState extends State<SendSmsScreen> {
     Future.delayed(Duration.zero, () async {
       Provider.of<ContactProvider>(context, listen: false)
           .loadStoredContactsDelegate();
+      // ignore: unnecessary_this
       if (this.mounted) {
         setState(() {});
       }
@@ -43,7 +41,7 @@ class _SendSmsScreenState extends State<SendSmsScreen> {
                   Provider.of<ContactProvider>(context, listen: false)
                       .sendSMSDelegate();
                 },
-                child: Text("send SMS now"))
+                child: const Text("send SMS now"))
           ],
         ),
       ),

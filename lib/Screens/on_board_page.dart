@@ -1,6 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
-
+import 'dart:developer';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +12,7 @@ import 'contact_tile.dart';
 import 'first_question_page.dart';
 
 class OnBoardPage extends StatefulWidget {
-  OnBoardPage({super.key});
+  const OnBoardPage({super.key});
 
   @override
   State<OnBoardPage> createState() => _OnBoardPageState();
@@ -84,7 +83,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
             Expanded(
               child: Column(
                 children: [
-                  Container(
+                  SizedBox(
                     width: width * 0.7,
                     child: TextField(
                       cursorColor: Colors.grey,
@@ -95,7 +94,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
                         hintText: 'Search events by their name',
                       ),
                       onChanged: (value) {
-                        print(searchText);
+                        log(searchText);
                         setState(() {
                           searchText = value;
                         });

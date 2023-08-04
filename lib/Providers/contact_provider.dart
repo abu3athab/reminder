@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:reminder/Controller/contact_controller.dart';
 import 'package:reminder/Models/contact_model.dart';
 

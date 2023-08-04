@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:reminder/Screens/send_sms_screen.dart';
 import 'package:reminder/Screens/on_board_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,7 +14,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => OnBoardPage()),
+          MaterialPageRoute(builder: (context) => const OnBoardPage()),
           (Route<dynamic> route) => false);
     });
     super.initState();
