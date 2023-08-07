@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:reminder/Controller/notification_controller.dart';
 import 'package:reminder/Providers/contact_provider.dart';
 import 'package:reminder/Providers/navigation_provider.dart';
 import 'package:reminder/Screens/splash_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:native_notify/native_notify.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  NativeNotify.initialize(3259, 'eqtmK8gpBPEq9gmfRvWahB', null, null);
-  runApp(const MyApp());
+  await NotificationController()
+      .initNotifications()
+      .then((value) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
