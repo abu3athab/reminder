@@ -25,8 +25,8 @@ class _OnBoardPageState extends State<OnBoardPage> {
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
-      contacts = await ContactController().getContacts();
-      if (this.mounted) {
+      contacts = await ContactController().getContactsFromUserDevice();
+      if (mounted) {
         setState(() {});
       }
     });
@@ -83,25 +83,27 @@ class _OnBoardPageState extends State<OnBoardPage> {
             Expanded(
               child: Column(
                 children: [
-                  SizedBox(
-                    width: width * 0.7,
-                    child: TextField(
-                      cursorColor: Colors.grey,
-                      decoration: const InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.grey, width: 1)),
-                        hintText: 'Search events by their name',
-                      ),
-                      onChanged: (value) {
-                        log(searchText);
-                        setState(() {
-                          searchText = value;
-                        });
-                      },
-                      style: TextStyle(fontSize: 15),
-                    ),
-                  ),
+                  isThird()
+                      ? SizedBox(
+                          width: width * 0.7,
+                          child: TextField(
+                            cursorColor: Colors.grey,
+                            decoration: const InputDecoration(
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey, width: 1)),
+                              hintText: 'Search events by their name',
+                            ),
+                            onChanged: (value) {
+                              log(searchText);
+                              setState(() {
+                                searchText = value;
+                              });
+                            },
+                            style: const TextStyle(fontSize: 15),
+                          ),
+                        )
+                      : const SizedBox(),
                   if (isFirst())
                     FirstQuestion()
                   else if (isSecond())
@@ -131,7 +133,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
                                         contact: contact,
                                       ),
                                       ElevatedButton(
-                                        onPressed: () {
+                                        onPressed: () async {
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(

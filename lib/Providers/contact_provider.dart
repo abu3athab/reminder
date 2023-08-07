@@ -5,6 +5,10 @@ import 'package:reminder/Models/contact_model.dart';
 class ContactProvider extends ChangeNotifier {
   List<ContactModel> contacts = [];
 
+  /*
+  delegate to call the function that retreives  contatcs 
+  from local storage and store them into a list of contacts
+  */
   Future<void> loadStoredContactsDelegate() async {
     contacts = await ContactController().getStoredContacts();
     notifyListeners();

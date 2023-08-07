@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
+import '../Controller/notification_controller.dart';
 import '../Providers/navigation_provider.dart';
 
 // ignore: must_be_immutable
@@ -44,6 +44,9 @@ class FirstQuestion extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
+                NotificationController().showNotifications(
+                    title: "Ziker reminder",
+                    body: "please resend your ziker sms");
                 Provider.of<NavigationProvider>(context, listen: false)
                     .setQuestionOneToTrue();
               },
