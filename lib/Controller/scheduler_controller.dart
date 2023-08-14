@@ -31,7 +31,9 @@ class SchedulerController {
     int remainingDays = 0;
 
     remainingDays = scheduledDate.difference(now).inDays;
-
+    if (remainingDays == 0) {
+      SchedulerController().scheduleMonthlyNotification(now.day);
+    }
     log("remaining days $remainingDays days");
 
     return remainingDays;
