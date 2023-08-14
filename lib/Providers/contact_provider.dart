@@ -4,6 +4,9 @@ import 'package:reminder/Models/contact_model.dart';
 
 class ContactProvider extends ChangeNotifier {
   List<ContactModel> contacts = [];
+  int numberOfAllowedContacts = 0;
+  int numberOfSelectedContacts = 0;
+  int numberOfRemainingContacts = 0;
 
   /*
   delegate to call the function that retreives  contatcs 
@@ -16,13 +19,18 @@ class ContactProvider extends ChangeNotifier {
 
   Future<void> addContact(ContactModel contact) async {
     contacts.add(contact);
+    numberOfSelectedContacts++;
+    numberOfRemainingContacts--;
     await ContactController().storeSelectedContacts(contacts);
+
     notifyListeners();
   }
 
   Future<void> removeContact(ContactModel contact) async {
     contacts
         .removeWhere((element) => element.phoneNumber == contact.phoneNumber);
+    numberOfSelectedContacts--;
+    numberOfRemainingContacts++;
     await ContactController().storeSelectedContacts(contacts);
     notifyListeners();
   }

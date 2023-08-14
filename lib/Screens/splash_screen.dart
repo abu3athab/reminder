@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:reminder/Controller/contact_controller.dart';
 import 'package:reminder/Models/contact_model.dart';
 import 'package:reminder/Providers/contact_provider.dart';
+import 'package:reminder/Providers/recharge_date_provider.dart';
+import 'package:reminder/Screens/main_page.dart';
 import 'package:reminder/Screens/on_board_page.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,23 +18,33 @@ class _SplashScreenState extends State<SplashScreen> {
   List<ContactModel> contacts = [];
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () async {
       Provider.of<ContactProvider>(context, listen: false)
-          .loadStoredContactsDelegate();
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const OnBoardPage()),
-          (Route<dynamic> route) => false);
+          .loadStoredContactsDelegate()
+          .then((value) async {
+        List contacts = await ContactController().getStoredContacts();
+        if (contacts.isNotEmpty) {
+          Future.delayed(Duration.zero).then((value) async =>
+              await Provider.of<RechargeDateProvider>(context, listen: false)
+                  .getRemainingDays()
+                  .then((value) => Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => const MainPage()),
+                      (Route<dynamic> route) => false)));
+        } else {
+          Future.delayed(Duration.zero).then((value) =>
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const OnBoardPage()),
+                  (Route<dynamic> route) => false));
+        }
+      });
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    contacts = Provider.of<ContactProvider>(context, listen: true).contacts;
-    for (var element in contacts) {
-      print(element.phoneNumber);
-    }
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(

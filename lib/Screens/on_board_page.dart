@@ -2,10 +2,11 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:reminder/Models/contact_model.dart';
+import 'package:reminder/Providers/contact_provider.dart';
 import 'package:reminder/Providers/navigation_provider.dart';
+import 'package:reminder/Screens/second_question_page.dart';
 import 'package:reminder/Screens/send_sms_screen.dart';
 import '../Controller/contact_controller.dart';
 import 'contact_tile.dart';
@@ -20,8 +21,11 @@ class OnBoardPage extends StatefulWidget {
 
 class _OnBoardPageState extends State<OnBoardPage> {
   double progress = 0.0;
+
   String searchText = '';
+
   List<Contact>? contacts;
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
@@ -105,9 +109,9 @@ class _OnBoardPageState extends State<OnBoardPage> {
                         )
                       : const SizedBox(),
                   if (isFirst())
-                    FirstQuestion()
+                    FirstQuestionPage()
                   else if (isSecond())
-                    secondQuestion()
+                    SecondQuestionPage()
                   else if (isThird())
                     (contacts) == null
                         ? const Center(child: CircularProgressIndicator())
@@ -172,7 +176,9 @@ class _OnBoardPageState extends State<OnBoardPage> {
                                               ?.number ??
                                           "no number found",
                                       photo: contacts?[index].photo);
-                                  return ContactTile(contact: contact);
+                                  return ContactTile(
+                                    contact: contact,
+                                  );
                                 } else if (searchText.isEmpty) {
                                   ContactModel contact = ContactModel(
                                       lastName:
@@ -185,7 +191,9 @@ class _OnBoardPageState extends State<OnBoardPage> {
                                               ?.number ??
                                           "no number found",
                                       photo: contacts?[index].photo);
-                                  return ContactTile(contact: contact);
+                                  return ContactTile(
+                                    contact: contact,
+                                  );
                                 } else {
                                   return Container();
                                 }
@@ -195,95 +203,117 @@ class _OnBoardPageState extends State<OnBoardPage> {
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 30,
-                  height: 30,
-                  decoration: BoxDecoration(
-                      color:
-                          Provider.of<NavigationProvider>(context, listen: true)
-                                  .firstQuestionIsDone
-                              ? Colors.indigo
-                              : Colors.white,
-                      border: Border.all(color: Colors.indigo),
-                      borderRadius: BorderRadius.circular(30)),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  width: 30,
-                  height: 30,
-                  decoration: BoxDecoration(
-                      color:
-                          Provider.of<NavigationProvider>(context, listen: true)
-                                  .secondQuestionIsDone
-                              ? Colors.indigo
-                              : Colors.white,
-                      border: Border.all(color: Colors.indigo),
-                      borderRadius: BorderRadius.circular(30)),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  width: 30,
-                  height: 30,
-                  decoration: BoxDecoration(
-                      color:
-                          Provider.of<NavigationProvider>(context, listen: true)
+            isThird()
+                ? Column(
+                    children: [
+                      Text(
+                          "remaining remaining contacts: ${Provider.of<ContactProvider>(context, listen: true).numberOfRemainingContacts}"),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 30,
+                            height: 30,
+                            decoration: BoxDecoration(
+                                color: Provider.of<NavigationProvider>(context,
+                                            listen: true)
+                                        .firstQuestionIsDone
+                                    ? Colors.indigo
+                                    : Colors.white,
+                                border: Border.all(color: Colors.indigo),
+                                borderRadius: BorderRadius.circular(30)),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            width: 30,
+                            height: 30,
+                            decoration: BoxDecoration(
+                                color: Provider.of<NavigationProvider>(context,
+                                            listen: true)
+                                        .secondQuestionIsDone
+                                    ? Colors.indigo
+                                    : Colors.white,
+                                border: Border.all(color: Colors.indigo),
+                                borderRadius: BorderRadius.circular(30)),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            width: 30,
+                            height: 30,
+                            decoration: BoxDecoration(
+                                color: Provider.of<NavigationProvider>(context,
+                                            listen: true)
+                                        .thirdQuestionIsDone
+                                    ? Colors.indigo
+                                    : Colors.white,
+                                border: Border.all(color: Colors.indigo),
+                                borderRadius: BorderRadius.circular(30)),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                            color: Provider.of<NavigationProvider>(context,
+                                        listen: true)
+                                    .firstQuestionIsDone
+                                ? Colors.indigo
+                                : Colors.white,
+                            border: Border.all(color: Colors.indigo),
+                            borderRadius: BorderRadius.circular(30)),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                            color: Provider.of<NavigationProvider>(context,
+                                        listen: true)
+                                    .secondQuestionIsDone
+                                ? Colors.indigo
+                                : Colors.white,
+                            border: Border.all(color: Colors.indigo),
+                            borderRadius: BorderRadius.circular(30)),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          color: Provider.of<NavigationProvider>(context,
+                                      listen: true)
                                   .thirdQuestionIsDone
                               ? Colors.indigo
                               : Colors.white,
-                      border: Border.all(color: Colors.indigo),
-                      borderRadius: BorderRadius.circular(30)),
-                ),
-              ],
-            ),
+                          border: Border.all(color: Colors.indigo),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                    ],
+                  ),
             const SizedBox(
               height: 40,
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget secondQuestion() {
-    return Column(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            color: Colors.grey.shade300,
-          ),
-          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-          child: SizedBox(
-            height: 280,
-            child: Center(
-                child: TextFormField(
-              decoration: const InputDecoration(
-                hintText: "Enter your expected recharge date",
-              ),
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-              ],
-              maxLength: 2,
-            )),
-          ),
-        ),
-        ElevatedButton(
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.indigo)),
-          onPressed: () {
-            Provider.of<NavigationProvider>(context, listen: false)
-                .setQuestionTwoToTrue();
-          },
-          child: const Text("Next"),
-        )
-      ],
     );
   }
 }

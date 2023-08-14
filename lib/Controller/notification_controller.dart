@@ -1,4 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:reminder/Controller/scheduler_controller.dart';
+// ignore: depend_on_referenced_packages
+import 'package:timezone/timezone.dart' as tz;
 
 class NotificationController {
   FlutterLocalNotificationsPlugin notificationsPlugin =
@@ -55,5 +60,37 @@ class NotificationController {
       {int id = 0, String? title, String? body, String? payload}) async {
     return notificationsPlugin.show(
         id, title, body, await notificationDetails());
+  }
+
+  //function to send notification in the specified recharge date
+  Future<void> showScheduledNotifications(
+      {int id = 0, String? title, String? body, String? payload}) async {
+    tz.TZDateTime scheduledDate =
+        await SchedulerController().getDateFromStorage();
+
+    log(
+      "howde $scheduledDate",
+    );
+    try {
+      return notificationsPlugin.zonedSchedule(
+          0, title, body, scheduledDate, await notificationDetails(),
+          // ignore: deprecated_member_use
+          androidAllowWhileIdle: true,
+          uiLocalNotificationDateInterpretation:
+              UILocalNotificationDateInterpretation.absoluteTime);
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future showmy(
+      {int id = 0, String? title, String? body, String? payload}) async {
+    await notificationsPlugin.periodicallyShow(
+      id,
+      title,
+      body,
+      RepeatInterval.everyMinute,
+      await notificationDetails(),
+    );
   }
 }

@@ -47,6 +47,7 @@ class ContactController {
     if (obj.containsKey("contacts")) {
       var data = json.decode(obj.getStringList('contacts').toString());
       for (var element in data) {
+        log("${element.runtimeType}jo");
         contacts.add(ContactModel.fromJson(element));
       }
       return contacts;

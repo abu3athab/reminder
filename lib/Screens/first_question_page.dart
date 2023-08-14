@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import '../Controller/notification_controller.dart';
+import 'package:reminder/Providers/contact_provider.dart';
 import '../Providers/navigation_provider.dart';
 
 // ignore: must_be_immutable
-class FirstQuestion extends StatelessWidget {
-  FirstQuestion({super.key});
+class FirstQuestionPage extends StatelessWidget {
+  FirstQuestionPage({super.key});
   TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -44,11 +44,21 @@ class FirstQuestion extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                NotificationController().showNotifications(
-                    title: "Ziker reminder",
-                    body: "please resend your ziker sms");
-                Provider.of<NavigationProvider>(context, listen: false)
-                    .setQuestionOneToTrue();
+                if (controller.text.isNotEmpty) {
+                  Provider.of<ContactProvider>(context, listen: false)
+                      .numberOfAllowedContacts = int.parse(controller.text);
+                  Provider.of<ContactProvider>(context, listen: false)
+                      .numberOfRemainingContacts = int.parse(controller.text);
+                  Provider.of<NavigationProvider>(context, listen: false)
+                      .setQuestionOneToTrue();
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      duration: Duration(seconds: 2),
+                      content: Text("field must not be empty"),
+                    ),
+                  );
+                }
               },
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.indigo)),
