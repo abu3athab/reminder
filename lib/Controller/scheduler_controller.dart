@@ -10,7 +10,7 @@ class SchedulerController {
     log("date now $now");
     tz.TZDateTime scheduledDate = tz.TZDateTime.now(tz.local);
 
-    scheduledDate = tz.TZDateTime(tz.local, now.year, now.month + 1, day);
+    scheduledDate = tz.TZDateTime(tz.local, now.year, now.month + 1, day, 20);
     log("time to sent the next notification:  $scheduledDate");
     SharedPreferences obj = await SharedPreferences.getInstance();
     obj.setString("time", scheduledDate.toString());
@@ -28,7 +28,7 @@ class SchedulerController {
   Future<int> caluculateRemainingDays() async {
     tz.TZDateTime now = tz.TZDateTime.now(tz.local);
     tz.TZDateTime scheduledDate = await getDateFromStorage();
-    int remainingDays = 0;
+    int remainingDays = 1;
 
     remainingDays = scheduledDate.difference(now).inDays;
     if (remainingDays == 0) {

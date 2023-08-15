@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:reminder/Models/contact_model.dart';
 import 'package:reminder/Providers/contact_provider.dart';
 
+import 'main_page.dart';
+
 class SendSmsScreen extends StatefulWidget {
   const SendSmsScreen({Key? key}) : super(key: key);
 
@@ -37,9 +39,17 @@ class _SendSmsScreenState extends State<SendSmsScreen> {
             ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.indigo)),
-                onPressed: () async {
-                  Provider.of<ContactProvider>(context, listen: false)
-                      .sendSMSDelegate();
+                onPressed: () {
+                  Future.delayed(Duration.zero, () async {
+                    Provider.of<ContactProvider>(context, listen: false)
+                        .sendSMSDelegate();
+                  }).then(
+                    (value) => Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MainPage()),
+                        (Route<dynamic> route) => false),
+                  );
                 },
                 child: const Text("send SMS now"))
           ],

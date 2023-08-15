@@ -24,18 +24,24 @@ class _SplashScreenState extends State<SplashScreen> {
           .then((value) async {
         List contacts = await ContactController().getStoredContacts();
         if (contacts.isNotEmpty) {
-          Future.delayed(Duration.zero).then((value) async =>
-              await Provider.of<RechargeDateProvider>(context, listen: false)
-                  .getRemainingDays()
-                  .then((value) => Navigator.pushAndRemoveUntil(
+          Future.delayed(Duration.zero).then(
+            (value) async => await Provider.of<RechargeDateProvider>(context,
+                    listen: false)
+                .getRemainingDays()
+                .then(
+                  (value) => Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => const MainPage()),
-                      (Route<dynamic> route) => false)));
+                      (Route<dynamic> route) => false),
+                ),
+          );
         } else {
-          Future.delayed(Duration.zero).then((value) =>
-              Navigator.pushAndRemoveUntil(
+          Future.delayed(Duration.zero)
+              .then((value) => Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => const OnBoardPage()),
+                  MaterialPageRoute(
+                    builder: (context) => const OnBoardPage(),
+                  ),
                   (Route<dynamic> route) => false));
         }
       });

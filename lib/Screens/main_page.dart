@@ -12,6 +12,15 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   final TextEditingController smsController = TextEditingController();
+  @override
+  void initState() {
+    Future.delayed(const Duration(seconds: 1), () async {
+      await Provider.of<RechargeDateProvider>(context, listen: false)
+          .getRemainingDays();
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

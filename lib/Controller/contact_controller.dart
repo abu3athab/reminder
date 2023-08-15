@@ -22,8 +22,12 @@ class ContactController {
   //store user selected contatcs
   Future<void> storeSelectedContacts(List<ContactModel> contacts) async {
     SharedPreferences obj = await SharedPreferences.getInstance();
-    obj.setStringList(
-        'contacts', contacts.map((e) => json.encode(e.toJson())).toList());
+    try {
+      obj.setStringList(
+          'contacts', contacts.map((e) => json.encode(e.toJson())).toList());
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
 //remove contacts user unselected
@@ -43,17 +47,21 @@ class ContactController {
   //retreive  user selected contacts from local storage
   Future<List<ContactModel>> getStoredContacts() async {
     List<ContactModel> contacts = [];
-    SharedPreferences obj = await SharedPreferences.getInstance();
-    if (obj.containsKey("contacts")) {
-      var data = json.decode(obj.getStringList('contacts').toString());
-      for (var element in data) {
-        log("${element.runtimeType}jo");
-        contacts.add(ContactModel.fromJson(element));
+
+    try {
+      SharedPreferences obj = await SharedPreferences.getInstance();
+      if (obj.containsKey("contacts")) {
+        var data = json.decode(obj.getStringList('contacts').toString());
+        for (var element in data) {
+          log("${element.runtimeType}jo");
+          contacts.add(ContactModel.fromJson(element));
+        }
       }
-      return contacts;
-    } else {
-      return [];
+    } catch (e) {
+      log("Error while fetching stored contacts: $e");
     }
+
+    return contacts;
   }
 
   //helper function that calls the function that sends sms to users

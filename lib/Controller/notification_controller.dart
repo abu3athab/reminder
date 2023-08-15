@@ -48,11 +48,15 @@ class NotificationController {
   }
 
   Future notificationDetails() async {
-    return const NotificationDetails(
-        android: AndroidNotificationDetails('channelId', 'channelName',
-            importance: Importance.max,
-            visibility: NotificationVisibility.public),
-        iOS: DarwinNotificationDetails());
+    try {
+      return const NotificationDetails(
+          android: AndroidNotificationDetails('channelId', 'channelName',
+              importance: Importance.max,
+              visibility: NotificationVisibility.public),
+          iOS: DarwinNotificationDetails());
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   //send the notification function
@@ -83,6 +87,7 @@ class NotificationController {
     }
   }
 
+//send notification every minute
   Future showmy(
       {int id = 0, String? title, String? body, String? payload}) async {
     await notificationsPlugin.periodicallyShow(

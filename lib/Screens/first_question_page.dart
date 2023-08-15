@@ -28,17 +28,18 @@ class FirstQuestionPage extends StatelessWidget {
               ),
             ),
             SizedBox(
-                height: 60,
-                width: 60,
-                child: TextFormField(
-                  controller: controller,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                  ],
-                  decoration: const InputDecoration(
-                    label: Text("enter"),
-                  ),
-                )),
+              height: 60,
+              width: 60,
+              child: TextFormField(
+                controller: controller,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                ],
+                decoration: const InputDecoration(
+                  label: Text("enter"),
+                ),
+              ),
+            ),
             const SizedBox(
               height: 100,
             ),
