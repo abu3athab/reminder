@@ -32,6 +32,8 @@ class SchedulerController {
 
     remainingDays = scheduledDate.difference(now).inDays;
     if (remainingDays == 0) {
+      SharedPreferences obj = await SharedPreferences.getInstance();
+      obj.setInt("isSent", 2);
       SchedulerController().scheduleMonthlyNotification(now.day);
     }
     log("remaining days $remainingDays days");

@@ -10,38 +10,58 @@ class FirstQuestionPage extends StatelessWidget {
   TextEditingController controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    double w = MediaQuery.of(context).size.width;
+    double h = MediaQuery.of(context).size.height;
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
         color: Colors.grey.shade300,
       ),
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      margin: EdgeInsets.symmetric(horizontal: w * 0.1, vertical: h * 0.004),
       child: SizedBox(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Padding(
-              padding: EdgeInsets.all(12.0),
-              child: Text(
+            Padding(
+              padding: EdgeInsets.all(h * 0.012),
+              child: const Text(
                 "How many free sms do you have every month",
                 style: TextStyle(color: Colors.indigo),
               ),
             ),
             SizedBox(
-              height: 60,
-              width: 60,
+              height: h * 0.06,
+              width: w * 0.06,
               child: TextFormField(
                 controller: controller,
                 inputFormatters: <TextInputFormatter>[
                   FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                 ],
+                keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                  label: Text("enter"),
+                  label: Text(""),
                 ),
+                onFieldSubmitted: (value) {
+                  if (controller.text.isNotEmpty) {
+                    Provider.of<ContactProvider>(context, listen: false)
+                        .numberOfAllowedContacts = int.parse(controller.text);
+                    Provider.of<ContactProvider>(context, listen: false)
+                        .numberOfRemainingContacts = int.parse(controller.text);
+                    Provider.of<NavigationProvider>(context, listen: false)
+                        .setQuestionOneToTrue();
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        duration: Duration(seconds: 2),
+                        content: Text("field must not be empty"),
+                      ),
+                    );
+                  }
+                },
               ),
             ),
-            const SizedBox(
-              height: 100,
+            SizedBox(
+              height: h * 0.1,
             ),
             ElevatedButton(
               onPressed: () {

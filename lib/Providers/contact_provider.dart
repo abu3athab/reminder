@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reminder/Controller/contact_controller.dart';
 import 'package:reminder/Models/contact_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ContactProvider extends ChangeNotifier {
   List<ContactModel> contacts = [];

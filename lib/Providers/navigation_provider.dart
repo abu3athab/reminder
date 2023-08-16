@@ -19,4 +19,14 @@ class NavigationProvider extends ChangeNotifier {
     thirdQuestionIsDone = true;
     notifyListeners();
   }
+
+  void setQuestionOneToFalse() {
+    firstQuestionIsDone = false;
+    notifyListeners();
+  }
+
+  void setQuestionTwoToFalse() {
+    secondQuestionIsDone = false;
+    notifyListeners();
+  }
 }

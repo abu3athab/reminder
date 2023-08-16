@@ -71,10 +71,22 @@ class ContactController {
 
 //function sends the selected users an sms
   void _sendSMS(String message, List<String> recipents) async {
-    String result = await sendSMS(message: message, recipients: recipents)
+    SharedPreferences obj = await SharedPreferences.getInstance();
+
+    await sendSMS(message: message, recipients: recipents)
+        .then((value) => obj.setInt("isSent", 1))
         .catchError((onError) {
       return (onError);
     });
-    log(result);
+  }
+
+  Future<int> isMessageSent() async {
+    SharedPreferences obj = await SharedPreferences.getInstance();
+
+    if (obj.containsKey("isSent")) {
+      return obj.getInt("isSent") ?? 0;
+    } else {
+      return 0;
+    }
   }
 }

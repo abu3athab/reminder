@@ -23,6 +23,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
   double progress = 0.0;
 
   String searchText = '';
+  var search = TextEditingController();
 
   List<Contact>? contacts;
 
@@ -34,6 +35,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
         setState(() {});
       }
     });
+    search.addListener(() {});
     super.initState();
   }
 
@@ -80,187 +82,69 @@ class _OnBoardPageState extends State<OnBoardPage> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              child: Column(
+      bottomNavigationBar: SafeArea(
+        child: isThird()
+            ? Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  isThird()
-                      ? SizedBox(
-                          width: width * 0.7,
-                          child: TextField(
-                            cursorColor: Colors.grey,
-                            decoration: const InputDecoration(
-                              focusedBorder: UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.grey, width: 1)),
-                              hintText: 'Search events by their name',
-                            ),
-                            onChanged: (value) {
-                              log(searchText);
-                              setState(() {
-                                searchText = value;
-                              });
-                            },
-                            style: const TextStyle(fontSize: 15),
-                          ),
-                        )
-                      : const SizedBox(),
-                  if (isFirst())
-                    FirstQuestionPage()
-                  else if (isSecond())
-                    SecondQuestionPage()
-                  else if (isThird())
-                    (contacts) == null
-                        ? const Center(child: CircularProgressIndicator())
-                        : Flexible(
-                            child: ListView.builder(
-                              itemCount: contacts!.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                if (index == contacts!.length - 1) {
-                                  ContactModel contact = ContactModel(
-                                      firstName:
-                                          contacts?[index].name.first ?? "",
-                                      lastName:
-                                          contacts?[index].name.last ?? "",
-                                      phoneNumber: contacts?[index]
-                                              .phones
-                                              .firstOrNull
-                                              ?.number ??
-                                          "",
-                                      photo: contacts?[index].photo);
-                                  return Column(
-                                    children: [
-                                      ContactTile(
-                                        contact: contact,
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () async {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (ctx) =>
-                                                      const SendSmsScreen()));
-                                        },
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  Colors.indigo),
-                                          shape: MaterialStateProperty.all(
-                                            RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                            ),
-                                          ),
-                                        ),
-                                        child: const Text("submit"),
-                                      ),
-                                    ],
-                                  );
-                                } else if (contacts![index]
-                                    .name
-                                    .first
-                                    .toString()
-                                    .toLowerCase()
-                                    .contains(searchText.toLowerCase())) {
-                                  ContactModel contact = ContactModel(
-                                      lastName:
-                                          contacts?[index].name.last ?? "",
-                                      firstName: contacts?[index].name.first ??
-                                          "no name found",
-                                      phoneNumber: contacts?[index]
-                                              .phones
-                                              .firstOrNull
-                                              ?.number ??
-                                          "no number found",
-                                      photo: contacts?[index].photo);
-                                  return ContactTile(
-                                    contact: contact,
-                                  );
-                                } else if (searchText.isEmpty) {
-                                  ContactModel contact = ContactModel(
-                                      lastName:
-                                          contacts?[index].name.last ?? "",
-                                      firstName: contacts?[index].name.first ??
-                                          "no name found",
-                                      phoneNumber: contacts?[index]
-                                              .phones
-                                              .firstOrNull
-                                              ?.number ??
-                                          "no number found",
-                                      photo: contacts?[index].photo);
-                                  return ContactTile(
-                                    contact: contact,
-                                  );
-                                } else {
-                                  return Container();
-                                }
-                              },
-                            ),
-                          ),
-                ],
-              ),
-            ),
-            isThird()
-                ? Column(
+                  Text(
+                      "remaining remaining contacts: ${Provider.of<ContactProvider>(context, listen: true).numberOfRemainingContacts}"),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                          "remaining remaining contacts: ${Provider.of<ContactProvider>(context, listen: true).numberOfRemainingContacts}"),
-                      const SizedBox(
-                        height: 10,
+                      Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                            color: Provider.of<NavigationProvider>(context,
+                                        listen: true)
+                                    .firstQuestionIsDone
+                                ? Colors.indigo
+                                : Colors.white,
+                            border: Border.all(color: Colors.indigo),
+                            borderRadius: BorderRadius.circular(30)),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 30,
-                            height: 30,
-                            decoration: BoxDecoration(
-                                color: Provider.of<NavigationProvider>(context,
-                                            listen: true)
-                                        .firstQuestionIsDone
-                                    ? Colors.indigo
-                                    : Colors.white,
-                                border: Border.all(color: Colors.indigo),
-                                borderRadius: BorderRadius.circular(30)),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Container(
-                            width: 30,
-                            height: 30,
-                            decoration: BoxDecoration(
-                                color: Provider.of<NavigationProvider>(context,
-                                            listen: true)
-                                        .secondQuestionIsDone
-                                    ? Colors.indigo
-                                    : Colors.white,
-                                border: Border.all(color: Colors.indigo),
-                                borderRadius: BorderRadius.circular(30)),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Container(
-                            width: 30,
-                            height: 30,
-                            decoration: BoxDecoration(
-                                color: Provider.of<NavigationProvider>(context,
-                                            listen: true)
-                                        .thirdQuestionIsDone
-                                    ? Colors.indigo
-                                    : Colors.white,
-                                border: Border.all(color: Colors.indigo),
-                                borderRadius: BorderRadius.circular(30)),
-                          ),
-                        ],
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                            color: Provider.of<NavigationProvider>(context,
+                                        listen: true)
+                                    .secondQuestionIsDone
+                                ? Colors.indigo
+                                : Colors.white,
+                            border: Border.all(color: Colors.indigo),
+                            borderRadius: BorderRadius.circular(30)),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                            color: Provider.of<NavigationProvider>(context,
+                                        listen: true)
+                                    .thirdQuestionIsDone
+                                ? Colors.indigo
+                                : Colors.white,
+                            border: Border.all(color: Colors.indigo),
+                            borderRadius: BorderRadius.circular(30)),
                       ),
                     ],
-                  )
-                : Row(
+                  ),
+                ],
+              )
+            : Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
@@ -308,6 +192,163 @@ class _OnBoardPageState extends State<OnBoardPage> {
                       ),
                     ],
                   ),
+                  const SizedBox(
+                    height: 20,
+                  )
+                ],
+              ),
+      ),
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              child: Column(
+                children: [
+                  isThird()
+                      ? Row(
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  Provider.of<NavigationProvider>(context,
+                                          listen: false)
+                                      .setQuestionTwoToFalse();
+                                },
+                                icon: const Icon(Icons.arrow_back_ios)),
+                            SizedBox(
+                              width: width * 0.7,
+                              child: TextField(
+                                cursorColor: Colors.grey,
+                                decoration: const InputDecoration(
+                                  focusedBorder: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.grey, width: 1)),
+                                  hintText: 'Search events by their name',
+                                ),
+                                onChanged: (value) {
+                                  log(searchText.isEmpty ? "hi" : searchText);
+                                  searchText = value;
+                                  setState(() {});
+                                },
+                                style: const TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          ],
+                        )
+                      : const SizedBox(),
+                  if (isFirst())
+                    FirstQuestionPage()
+                  else if (isSecond())
+                    SecondQuestionPage()
+                  else if (isThird())
+                    (contacts) == null
+                        ? const Center(child: CircularProgressIndicator())
+                        : Expanded(
+                            child: ListView.builder(
+                              itemCount: contacts!.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                String fullName =
+                                    "${contacts![index].name.first} ${contacts![index].name.last}";
+
+                                if (index == contacts!.length - 1 &&
+                                    (searchText.isEmpty ||
+                                        fullName
+                                            .toString()
+                                            .toLowerCase()
+                                            .contains(
+                                                searchText.toLowerCase()))) {
+                                  ContactModel contact = ContactModel(
+                                      firstName:
+                                          contacts?[index].name.first ?? "",
+                                      lastName:
+                                          contacts?[index].name.last ?? "",
+                                      phoneNumber: contacts?[index]
+                                              .phones
+                                              .firstOrNull
+                                              ?.number ??
+                                          "",
+                                      photo: contacts?[index].photo);
+                                  return Column(
+                                    children: [
+                                      ContactTile(
+                                        contact: contact,
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () async {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (ctx) =>
+                                                      const SendSmsScreen()));
+                                        },
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  Colors.indigo),
+                                          shape: MaterialStateProperty.all(
+                                            RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
+                                            ),
+                                          ),
+                                        ),
+                                        child: const Text("submit"),
+                                      ),
+                                    ],
+                                  );
+                                } else if (fullName
+                                        .toString()
+                                        .toLowerCase()
+                                        .contains(searchText.toLowerCase()) ||
+                                    fullName
+                                        .toString()
+                                        .toLowerCase()
+                                        .contains(searchText.toLowerCase())) {
+                                  ContactModel contact = ContactModel(
+                                      lastName:
+                                          contacts?[index].name.last ?? "",
+                                      firstName: contacts?[index].name.first ??
+                                          "no name found",
+                                      phoneNumber: contacts?[index]
+                                              .phones
+                                              .firstOrNull
+                                              ?.number ??
+                                          "no number found",
+                                      photo: contacts?[index].photo);
+                                  return ContactTile(
+                                    contact: contact,
+                                  );
+                                } else if (searchText.isEmpty) {
+                                  ContactModel contact = ContactModel(
+                                      lastName:
+                                          contacts?[index].name.last ?? "",
+                                      firstName: contacts?[index].name.first ??
+                                          "no name found",
+                                      phoneNumber: contacts?[index]
+                                              .phones
+                                              .firstOrNull
+                                              ?.number ??
+                                          "no number found",
+                                      photo: contacts?[index].photo);
+                                  return ContactTile(
+                                    contact: contact,
+                                  );
+                                } else if (!fullName
+                                    .toString()
+                                    .toLowerCase()
+                                    .contains(searchText.toLowerCase())) {
+                                  return Container(
+                                    color: Colors.white,
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              },
+                            ),
+                          ),
+                ],
+              ),
+            ),
             const SizedBox(
               height: 40,
             ),
