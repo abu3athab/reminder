@@ -306,7 +306,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (ctx) => const SendSmsScreen()));
+                                    builder: (ctx) => SendSmsScreen()));
                           },
                           style: ButtonStyle(
                             backgroundColor:

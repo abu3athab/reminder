@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:reminder/Controller/contact_controller.dart';
 import 'package:reminder/Models/contact_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,14 +37,17 @@ class ContactProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void sendSMSDelegate() {
+  void sendSMSDelegate(PermissionStatus status) {
     List<String> recipents = [];
     for (var element in contacts) {
       recipents.add(element.phoneNumber ?? "");
     }
-    // recipents.add(contacts.first.phoneNumber??"");
-    ContactController().sendSMSHelper(
-        'عطر لسانك بالصلاة والسلام على النبي محمد ﷺ:From Ahmed Alkhatib',
-        recipents);
+    if (status.isGranted) {
+      ContactController().sendSMSHelper(
+          'عطر لسانك بالصلاة والسلام على النبي محمد ﷺ:From Ahmed Alkhatib',
+          recipents);
+    } else {
+      return;
+    }
   }
 }

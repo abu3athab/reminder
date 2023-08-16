@@ -4,6 +4,7 @@ import 'package:reminder/Controller/contact_controller.dart';
 import 'package:reminder/Models/contact_model.dart';
 import 'package:reminder/Providers/contact_provider.dart';
 import 'package:reminder/Providers/recharge_date_provider.dart';
+import 'package:reminder/Providers/sms_provider.dart';
 import 'package:reminder/Screens/main_page.dart';
 import 'package:reminder/Screens/on_board_page.dart';
 import 'package:reminder/Screens/send_sms_screen.dart';
@@ -24,6 +25,8 @@ class _SplashScreenState extends State<SplashScreen> {
       () async {
         Provider.of<ContactProvider>(context, listen: false)
             .loadStoredContactsDelegate()
+            .then((value) => Provider.of<SMSProvider>(context, listen: false)
+                .getPermission())
             .then(
           (value) async {
             /*     if isSent==0 the user is new and has no data stored
@@ -52,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const SendSmsScreen())));
+                          builder: (context) => SendSmsScreen())));
             }
           },
         );
