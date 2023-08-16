@@ -4,10 +4,16 @@ import 'package:provider/provider.dart';
 import 'package:reminder/Providers/contact_provider.dart';
 import '../Providers/navigation_provider.dart';
 
-// ignore: must_be_immutable
-class FirstQuestionPage extends StatelessWidget {
-  FirstQuestionPage({super.key});
+class FirstQuestionPage extends StatefulWidget {
+  const FirstQuestionPage({super.key});
+
+  @override
+  State<FirstQuestionPage> createState() => _FirstQuestionPageState();
+}
+
+class _FirstQuestionPageState extends State<FirstQuestionPage> {
   TextEditingController controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -32,16 +38,16 @@ class FirstQuestionPage extends StatelessWidget {
             SizedBox(
               height: h * 0.06,
               width: w * 0.06,
-              child: TextFormField(
+              child: TextField(
                 controller: controller,
                 inputFormatters: <TextInputFormatter>[
                   FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
                 ],
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                  label: Text(""),
+                  hintText: "",
                 ),
-                onFieldSubmitted: (value) {
+                onSubmitted: (value) {
                   if (controller.text.isNotEmpty) {
                     Provider.of<ContactProvider>(context, listen: false)
                         .numberOfAllowedContacts = int.parse(controller.text);

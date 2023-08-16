@@ -5,10 +5,14 @@ import 'package:reminder/Controller/scheduler_controller.dart';
 
 import '../Providers/navigation_provider.dart';
 
-// ignore: must_be_immutable
-class SecondQuestionPage extends StatelessWidget {
-  SecondQuestionPage({super.key});
+class SecondQuestionPage extends StatefulWidget {
+  const SecondQuestionPage({super.key});
 
+  @override
+  State<SecondQuestionPage> createState() => _SecondQuestionPageState();
+}
+
+class _SecondQuestionPageState extends State<SecondQuestionPage> {
   TextEditingController controller = TextEditingController();
 
   @override

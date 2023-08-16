@@ -41,6 +41,7 @@ class ContactProvider extends ChangeNotifier {
     for (var element in contacts) {
       recipents.add(element.phoneNumber ?? "");
     }
+    // recipents.add(contacts.first.phoneNumber??"");
     ContactController().sendSMSHelper(
         'عطر لسانك بالصلاة والسلام على النبي محمد ﷺ:From Ahmed Alkhatib',
         recipents);

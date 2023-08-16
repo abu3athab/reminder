@@ -250,53 +250,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
                                 String fullName =
                                     "${contacts![index].name.first} ${contacts![index].name.last}";
 
-                                if (index == contacts!.length - 1 &&
-                                    (searchText.isEmpty ||
-                                        fullName
-                                            .toString()
-                                            .toLowerCase()
-                                            .contains(
-                                                searchText.toLowerCase()))) {
-                                  ContactModel contact = ContactModel(
-                                      firstName:
-                                          contacts?[index].name.first ?? "",
-                                      lastName:
-                                          contacts?[index].name.last ?? "",
-                                      phoneNumber: contacts?[index]
-                                              .phones
-                                              .firstOrNull
-                                              ?.number ??
-                                          "",
-                                      photo: contacts?[index].photo);
-                                  return Column(
-                                    children: [
-                                      ContactTile(
-                                        contact: contact,
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () async {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (ctx) =>
-                                                      const SendSmsScreen()));
-                                        },
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  Colors.indigo),
-                                          shape: MaterialStateProperty.all(
-                                            RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                            ),
-                                          ),
-                                        ),
-                                        child: const Text("submit"),
-                                      ),
-                                    ],
-                                  );
-                                } else if (fullName
+                                if (fullName
                                         .toString()
                                         .toLowerCase()
                                         .contains(searchText.toLowerCase()) ||
@@ -346,6 +300,26 @@ class _OnBoardPageState extends State<OnBoardPage> {
                               },
                             ),
                           ),
+                  isThird()
+                      ? ElevatedButton(
+                          onPressed: () async {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (ctx) => const SendSmsScreen()));
+                          },
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.indigo),
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                            ),
+                          ),
+                          child: const Text("submit"),
+                        )
+                      : Container()
                 ],
               ),
             ),
