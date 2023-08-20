@@ -237,9 +237,9 @@ class _OnBoardPageState extends State<OnBoardPage> {
                         )
                       : const SizedBox(),
                   if (isFirst())
-                    FirstQuestionPage()
+                    const FirstQuestionPage()
                   else if (isSecond())
-                    SecondQuestionPage()
+                    const SecondQuestionPage()
                   else if (isThird())
                     (contacts) == null
                         ? const Center(child: CircularProgressIndicator())
@@ -306,7 +306,7 @@ class _OnBoardPageState extends State<OnBoardPage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (ctx) => SendSmsScreen()));
+                                    builder: (ctx) => const SendSmsScreen()));
                           },
                           style: ButtonStyle(
                             backgroundColor:

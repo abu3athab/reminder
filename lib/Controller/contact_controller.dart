@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -65,19 +66,33 @@ class ContactController {
   }
 
   //helper function that calls the function that sends sms to users
-  void sendSMSHelper(String message, List<String> recipents) async {
-    _sendSMS(message, recipents);
+  void sendSMSHelper(
+      String message, List<String> recipents, bool isGranted) async {
+    _sendSMS(message, recipents, isGranted);
   }
 
 //function sends the selected users an sms
-  void _sendSMS(String message, List<String> recipents) async {
+  void _sendSMS(String message, List<String> recipents, bool isGranted) async {
     SharedPreferences obj = await SharedPreferences.getInstance();
+    if (Platform.isAndroid && isGranted) {
+      await sendSMS(message: message, recipients: recipents, sendDirect: false)
+          .then((value) {
+        obj.setInt("isSent", 1);
+      }).catchError((onError) {
+        return (onError);
+      });
+    } else if (Platform.isIOS) {
+      await sendSMS(message: message, recipients: recipents, sendDirect: true)
+          .then((value) {
+        obj.setInt("isSent", 1);
+      }).catchError((onError) {
+        return (onError);
+      });
+    } else {
+      return;
+    }
 
-    await sendSMS(message: message, recipients: recipents)
-        .then((value) => obj.setInt("isSent", 1))
-        .catchError((onError) {
-      return (onError);
-    });
+    return;
   }
 
   Future<int> isMessageSent() async {

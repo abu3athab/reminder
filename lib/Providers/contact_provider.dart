@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:reminder/Controller/contact_controller.dart';
 import 'package:reminder/Models/contact_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ContactProvider extends ChangeNotifier {
   List<ContactModel> contacts = [];
@@ -37,17 +35,15 @@ class ContactProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void sendSMSDelegate(PermissionStatus status) {
+  void sendSMSDelegate({required bool isGranted}) {
     List<String> recipents = [];
     for (var element in contacts) {
       recipents.add(element.phoneNumber ?? "");
     }
-    if (status.isGranted) {
-      ContactController().sendSMSHelper(
-          'عطر لسانك بالصلاة والسلام على النبي محمد ﷺ:From Ahmed Alkhatib',
-          recipents);
-    } else {
-      return;
-    }
+
+    ContactController().sendSMSHelper(
+        'عطر لسانك بالصلاة والسلام على النبي محمد ﷺ:From Ahmed Alkhatib',
+        recipents,
+        isGranted);
   }
 }

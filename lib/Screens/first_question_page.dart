@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:reminder/Providers/contact_provider.dart';
 import '../Providers/navigation_provider.dart';
+import '../Providers/sms_provider.dart';
 
 class FirstQuestionPage extends StatefulWidget {
   const FirstQuestionPage({super.key});
@@ -80,9 +81,10 @@ class _FirstQuestionPageState extends State<FirstQuestionPage> {
                       .setQuestionOneToTrue();
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      duration: Duration(seconds: 2),
-                      content: Text("field must not be empty"),
+                    SnackBar(
+                      duration: const Duration(seconds: 2),
+                      content: Text(
+                          "field must not be empty,${Provider.of<SMSProvider>(context, listen: false).isGranted}"),
                     ),
                   );
                 }

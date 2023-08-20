@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:reminder/Controller/contact_controller.dart';
 import 'package:reminder/Models/contact_model.dart';
 import 'package:reminder/Providers/contact_provider.dart';
-import 'package:reminder/Providers/recharge_date_provider.dart';
 import 'package:reminder/Providers/sms_provider.dart';
 import 'package:reminder/Screens/main_page.dart';
 import 'package:reminder/Screens/on_board_page.dart';
@@ -55,7 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SendSmsScreen())));
+                          builder: (context) => const SendSmsScreen())));
             }
           },
         );

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:reminder/Controller/scheduler_controller.dart';
+
 // ignore: depend_on_referenced_packages
 import 'package:timezone/timezone.dart' as tz;
 
@@ -20,6 +21,7 @@ class NotificationController {
                 AndroidFlutterLocalNotificationsPlugin>()
             ?.requestPermission() ??
         false;
+
     //request permission for ios
     await notificationsPlugin
             .resolvePlatformSpecificImplementation<
@@ -41,7 +43,6 @@ class NotificationController {
       android: androidInitializationSettings,
       iOS: initializationSettingsIOS,
     );
-
     await notificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse:
             (NotificationResponse response) async {});

@@ -29,7 +29,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     Future.delayed(Duration.zero, () async {
       await NotificationController()
-          .showScheduledNotifications(title: "hi", body: "yooooooo");
+          .showmy(title: "ahmed", body: "welcome again to ziker");
+      // await NotificationController()
+      //     .showScheduledNotifications(title: "hi", body: "yooooooo");
     });
     super.initState();
   }

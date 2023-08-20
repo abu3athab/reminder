@@ -16,7 +16,6 @@ class SendSmsScreen extends StatefulWidget {
 
 class _SendSmsScreenState extends State<SendSmsScreen> {
   List<ContactModel> contacts = [];
-  PermissionStatus status = PermissionStatus.denied;
 
   @override
   void initState() {
@@ -33,7 +32,6 @@ class _SendSmsScreenState extends State<SendSmsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    status = Provider.of<SMSProvider>(context, listen: true).isGranted;
     contacts = Provider.of<ContactProvider>(context, listen: true).contacts;
     return Scaffold(
       body: Center(
@@ -46,7 +44,11 @@ class _SendSmsScreenState extends State<SendSmsScreen> {
                 onPressed: () {
                   Future.delayed(Duration.zero, () async {
                     Provider.of<ContactProvider>(context, listen: false)
-                        .sendSMSDelegate(status);
+                        .sendSMSDelegate(
+                            isGranted:
+                                Provider.of<SMSProvider>(context, listen: false)
+                                    .isGranted
+                                    .isGranted);
                   }).then(
                     (value) => Navigator.pushAndRemoveUntil(
                         context,
