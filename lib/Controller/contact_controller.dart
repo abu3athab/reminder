@@ -77,16 +77,20 @@ class ContactController {
     if (Platform.isAndroid && isGranted && canSend) {
       await sendSMS(message: message, recipients: recipents, sendDirect: false)
           .then((value) {
-        obj.setInt("isSent", 1);
-        flag = true;
+        if (value == "sent") {
+          obj.setInt("isSent", 1);
+          flag = true;
+        }
       }).catchError((onError) {
         flag = false;
       });
     } else if (Platform.isIOS && canSend) {
       await sendSMS(message: message, recipients: recipents, sendDirect: true)
           .then((value) {
-        obj.setInt("isSent", 1);
-        flag = true;
+        if (value == "sent") {
+          obj.setInt("isSent", 1);
+          flag = true;
+        }
       }).catchError((onError) {
         flag = false;
       });
