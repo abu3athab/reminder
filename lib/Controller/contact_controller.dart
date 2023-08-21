@@ -74,14 +74,16 @@ class ContactController {
 //function sends the selected users an sms
   void _sendSMS(String message, List<String> recipents, bool isGranted) async {
     SharedPreferences obj = await SharedPreferences.getInstance();
-    if (Platform.isAndroid && isGranted) {
+    bool canSend = await canSendSMS();
+    print("can send ?:c $canSend");
+    if (Platform.isAndroid && isGranted && canSend) {
       await sendSMS(message: message, recipients: recipents, sendDirect: false)
           .then((value) {
         obj.setInt("isSent", 1);
       }).catchError((onError) {
         return (onError);
       });
-    } else if (Platform.isIOS) {
+    } else if (Platform.isIOS && canSend) {
       await sendSMS(message: message, recipients: recipents, sendDirect: true)
           .then((value) {
         obj.setInt("isSent", 1);

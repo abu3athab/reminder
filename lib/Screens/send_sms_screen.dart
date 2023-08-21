@@ -5,6 +5,7 @@ import 'package:reminder/Models/contact_model.dart';
 import 'package:reminder/Providers/contact_provider.dart';
 import 'package:reminder/Providers/sms_provider.dart';
 
+import '../Controller/contact_controller.dart';
 import 'main_page.dart';
 
 class SendSmsScreen extends StatefulWidget {
@@ -16,13 +17,13 @@ class SendSmsScreen extends StatefulWidget {
 
 class _SendSmsScreenState extends State<SendSmsScreen> {
   List<ContactModel> contacts = [];
-
+  int isSent = 0;
   @override
   void initState() {
     Future.delayed(Duration.zero, () async {
       Provider.of<ContactProvider>(context, listen: false)
           .loadStoredContactsDelegate();
-
+      await Provider.of<SMSProvider>(context, listen: false).isSentMsg();
       if (mounted) {
         setState(() {});
       }
@@ -33,6 +34,7 @@ class _SendSmsScreenState extends State<SendSmsScreen> {
   @override
   Widget build(BuildContext context) {
     contacts = Provider.of<ContactProvider>(context, listen: true).contacts;
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -41,21 +43,25 @@ class _SendSmsScreenState extends State<SendSmsScreen> {
             ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.indigo)),
-                onPressed: () {
-                  Future.delayed(Duration.zero, () async {
+                onPressed: () async {
+                  await Future.delayed(Duration.zero, () async {
                     Provider.of<ContactProvider>(context, listen: false)
                         .sendSMSDelegate(
                             isGranted:
                                 Provider.of<SMSProvider>(context, listen: false)
                                     .isGranted
                                     .isGranted);
-                  }).then(
-                    (value) => Navigator.pushAndRemoveUntil(
+                  });
+                  if (Provider.of<SMSProvider>(context, listen: false).isSent ==
+                      1) {
+                    Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const MainPage()),
-                        (Route<dynamic> route) => false),
-                  );
+                        (Route<dynamic> route) => false);
+                  } else {
+                    return;
+                  }
                 },
                 child: const Text("send SMS now"))
           ],
