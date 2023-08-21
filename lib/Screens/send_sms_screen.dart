@@ -23,7 +23,7 @@ class _SendSmsScreenState extends State<SendSmsScreen> {
     Future.delayed(Duration.zero, () async {
       Provider.of<ContactProvider>(context, listen: false)
           .loadStoredContactsDelegate();
-      await Provider.of<SMSProvider>(context, listen: false).isSentMsg();
+
       if (mounted) {
         setState(() {});
       }
@@ -50,18 +50,20 @@ class _SendSmsScreenState extends State<SendSmsScreen> {
                             isGranted:
                                 Provider.of<SMSProvider>(context, listen: false)
                                     .isGranted
-                                    .isGranted);
+                                    .isGranted)
+                        .then((value) {
+                      if (value) {
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => MainPage()),
+                            (Route<dynamic> route) => false);
+                      } else {
+                        return;
+                      }
+                    });
                   });
-                  if (Provider.of<SMSProvider>(context, listen: false).isSent ==
-                      1) {
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MainPage()),
-                        (Route<dynamic> route) => false);
-                  } else {
-                    return;
-                  }
+
+                  print(isSent);
                 },
                 child: const Text("send SMS now"))
           ],

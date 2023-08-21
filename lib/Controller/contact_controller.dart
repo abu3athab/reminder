@@ -66,35 +66,35 @@ class ContactController {
   }
 
   //helper function that calls the function that sends sms to users
-  void sendSMSHelper(
-      String message, List<String> recipents, bool isGranted) async {
-    _sendSMS(message, recipents, isGranted);
-  }
 
 //function sends the selected users an sms
-  void _sendSMS(String message, List<String> recipents, bool isGranted) async {
+  Future<bool> sendSMSMsg(
+      String message, List<String> recipents, bool isGranted) async {
     SharedPreferences obj = await SharedPreferences.getInstance();
     bool canSend = await canSendSMS();
+    bool flag = false;
     print("can send ?:c $canSend");
     if (Platform.isAndroid && isGranted && canSend) {
       await sendSMS(message: message, recipients: recipents, sendDirect: false)
           .then((value) {
         obj.setInt("isSent", 1);
+        flag = true;
       }).catchError((onError) {
-        return (onError);
+        flag = false;
       });
     } else if (Platform.isIOS && canSend) {
       await sendSMS(message: message, recipients: recipents, sendDirect: true)
           .then((value) {
         obj.setInt("isSent", 1);
+        flag = true;
       }).catchError((onError) {
-        return (onError);
+        flag = false;
       });
     } else {
-      return;
+      flag = false;
     }
 
-    return;
+    return flag;
   }
 
   Future<int> isMessageSent() async {
