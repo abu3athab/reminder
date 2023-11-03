@@ -8,6 +8,7 @@ import 'dart:convert';
 import '../Models/contact_model.dart';
 import 'package:flutter_sms/flutter_sms.dart';
 
+//test
 class ContactController {
   Future<List<Contact>> getContactsFromUserDevice() async {
     //request permission to access contacts and check if permission is granted
