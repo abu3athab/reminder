@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -84,6 +85,13 @@ class ContactController {
       }).catchError((onError) {
         flag = false;
       });
+    } else if (Platform.isAndroid && isGranted && !canSend) {
+      if (await sendSMSForAndroid(phoneNumbers: recipents, message: message)) {
+        flag = true;
+        obj.setInt("isSent", 1);
+      } else {
+        flag = false;
+      }
     } else if (Platform.isIOS && canSend) {
       await sendSMS(message: message, recipients: recipents, sendDirect: true)
           .then((value) {
@@ -98,6 +106,29 @@ class ContactController {
       flag = false;
     }
 
+    return flag;
+  }
+
+  Future<bool> sendSMSForAndroid(
+      {required List<String> phoneNumbers, required String message}) async {
+    bool flag = false;
+    const platform = MethodChannel('com.example.reminder');
+    print(message);
+    print(phoneNumbers);
+    try {
+      var result = await platform.invokeMethod('sendSMS', {
+        'phoneNumbers': phoneNumbers,
+        'message': message,
+      });
+      if (result == "SMS sent successfully.") {
+        flag = true;
+      } else {
+        flag = false;
+      }
+    } on PlatformException catch (e) {
+      print("Error: ${e.toString()} !!!");
+      flag = false;
+    }
     return flag;
   }
 
