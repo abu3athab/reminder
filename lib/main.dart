@@ -6,6 +6,7 @@ import 'package:reminder/Controller/notification_controller.dart';
 import 'package:reminder/Providers/contact_provider.dart';
 import 'package:reminder/Providers/navigation_provider.dart';
 import 'package:reminder/Providers/recharge_date_provider.dart';
+import 'package:reminder/Providers/sms_provider.dart';
 import 'package:reminder/Screens/splash_screen.dart';
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -28,7 +29,9 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     Future.delayed(Duration.zero, () async {
       await NotificationController()
-          .showScheduledNotifications(title: "hi", body: "yooooooo");
+          .showmy(title: "ahmed", body: "welcome again to ziker");
+      // await NotificationController()
+      //     .showScheduledNotifications(title: "hi", body: "yooooooo");
     });
     super.initState();
   }
@@ -43,7 +46,8 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (context) => ContactProvider(),
         ),
-        ChangeNotifierProvider(create: (context) => RechargeDateProvider())
+        ChangeNotifierProvider(create: (context) => RechargeDateProvider()),
+        ChangeNotifierProvider(create: (context) => SMSProvider())
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:reminder/Controller/scheduler_controller.dart';
+
 // ignore: depend_on_referenced_packages
 import 'package:timezone/timezone.dart' as tz;
 
@@ -20,6 +21,7 @@ class NotificationController {
                 AndroidFlutterLocalNotificationsPlugin>()
             ?.requestPermission() ??
         false;
+
     //request permission for ios
     await notificationsPlugin
             .resolvePlatformSpecificImplementation<
@@ -41,18 +43,21 @@ class NotificationController {
       android: androidInitializationSettings,
       iOS: initializationSettingsIOS,
     );
-
     await notificationsPlugin.initialize(initializationSettings,
         onDidReceiveNotificationResponse:
             (NotificationResponse response) async {});
   }
 
   Future notificationDetails() async {
-    return const NotificationDetails(
-        android: AndroidNotificationDetails('channelId', 'channelName',
-            importance: Importance.max,
-            visibility: NotificationVisibility.public),
-        iOS: DarwinNotificationDetails());
+    try {
+      return const NotificationDetails(
+          android: AndroidNotificationDetails('channelId', 'channelName',
+              importance: Importance.max,
+              visibility: NotificationVisibility.public),
+          iOS: DarwinNotificationDetails());
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   //send the notification function
@@ -83,6 +88,7 @@ class NotificationController {
     }
   }
 
+//send notification every minute
   Future showmy(
       {int id = 0, String? title, String? body, String? payload}) async {
     await notificationsPlugin.periodicallyShow(

@@ -5,24 +5,38 @@ import 'package:reminder/Controller/scheduler_controller.dart';
 
 import '../Providers/navigation_provider.dart';
 
-// ignore: must_be_immutable
-class SecondQuestionPage extends StatelessWidget {
-  SecondQuestionPage({super.key});
+class SecondQuestionPage extends StatefulWidget {
+  const SecondQuestionPage({super.key});
 
+  @override
+  State<SecondQuestionPage> createState() => _SecondQuestionPageState();
+}
+
+class _SecondQuestionPageState extends State<SecondQuestionPage> {
   TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    double w = MediaQuery.of(context).size.width;
+    double h = MediaQuery.of(context).size.height;
     return Column(
       children: [
+        IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Provider.of<NavigationProvider>(context, listen: false)
+                .setQuestionOneToFalse();
+          },
+        ),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             color: Colors.grey.shade300,
           ),
-          margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          margin:
+              EdgeInsets.symmetric(horizontal: w * 0.04, vertical: h * 0.001),
           child: SizedBox(
-            height: 280,
+            height: h * 0.28,
             child: Center(
                 child: TextFormField(
               controller: controller,
@@ -33,6 +47,7 @@ class SecondQuestionPage extends StatelessWidget {
                 FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
               ],
               maxLength: 2,
+              keyboardType: TextInputType.number,
             )),
           ),
         ),

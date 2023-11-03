@@ -35,13 +35,15 @@ class ContactProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void sendSMSDelegate() {
+  Future<bool> sendSMSDelegate({required bool isGranted}) async {
     List<String> recipents = [];
     for (var element in contacts) {
       recipents.add(element.phoneNumber ?? "");
     }
-    ContactController().sendSMSHelper(
+
+    return await ContactController().sendSMSMsg(
         'عطر لسانك بالصلاة والسلام على النبي محمد ﷺ:From Ahmed Alkhatib',
-        recipents);
+        recipents,
+        isGranted);
   }
 }

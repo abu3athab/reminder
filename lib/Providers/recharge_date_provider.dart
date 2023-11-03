@@ -6,5 +6,6 @@ class RechargeDateProvider extends ChangeNotifier {
 
   Future<void> getRemainingDays() async {
     remainingDays = await SchedulerController().caluculateRemainingDays();
+    notifyListeners();
   }
 }
